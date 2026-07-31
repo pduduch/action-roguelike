@@ -75,3 +75,13 @@ Config/steamvr_ue_editor_app.json
 Config/SteamVRBindings
 Platforms/HoloLens/Config/HoloLensEngine.ini
 .vsconfig
+
+# Modern Unreal Engine specific ignores
+/.projectdir
+/FileOpenOrder/
+/Script/
+.plastic/
+.vscode/
+
+# MegaScans / Quixel assets source files (if you use them)
+Content/Megascans/Presets/
