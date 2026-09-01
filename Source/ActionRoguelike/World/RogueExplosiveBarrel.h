@@ -4,6 +4,9 @@
 #include "GameFramework/Actor.h"
 #include "RogueExplosiveBarrel.generated.h"
 
+class UAudioComponent;
+class UNiagaraComponent;
+class URadialForceComponent;
 class UNiagaraSystem;
 class UStaticMeshComponent;
 
@@ -24,20 +27,30 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category="Explosive Barrel")
 	TObjectPtr<UNiagaraSystem> TriggeredEffect;
 	
+	UPROPERTY(EditDefaultsOnly, Category="Explosive Barrel")
+	TObjectPtr<USoundBase> TriggeredSound;
+	
 	UPROPERTY(VisibleAnywhere, Category="Components")
 	TObjectPtr<UStaticMeshComponent> MeshComponent;
 	
-	UPROPERTY(VisibleAnywhere, Category="Explosive Barrel")
-	bool HasBeenTriggered = false;
+	UPROPERTY(VisibleAnywhere, Category="Components")
+	TObjectPtr<URadialForceComponent> ForceComponent;
 	
-	UFUNCTION()
-	void OnDamageTaken(AActor* DamagedActor, float Damage, class AController* InstigatedBy, FVector HitLocation, class UPrimitiveComponent* FHitComponent, FName BoneName, FVector ShotFromDirection, const class UDamageType* DamageType, AActor* DamageCauser);
-
-	void ExplosionTriggeredTimerElapsed();
+	bool bHasExploded = false;
+	
+	FTimerHandle ExplosionTriggeredTimerHandle;
+	
+	UPROPERTY()
+	TObjectPtr<UNiagaraComponent> ActiveTriggerEffect = nullptr;
+	
+	UPROPERTY()
+	TObjectPtr<UAudioComponent> ActiveTriggerSound = nullptr;
+	
+	void Explode();
 	
 public:
 	
-	virtual void PostInitializeComponents() override;
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 	
 	ARogueExplosiveBarrel();	
 	
