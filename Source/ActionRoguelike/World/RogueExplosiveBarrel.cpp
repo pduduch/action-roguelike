@@ -3,7 +3,7 @@
 #include "RogueExplosiveBarrel.h"
 
 #include "NiagaraFunctionLibrary.h"
-#include "ActionRoguelike/Projectiles/RogueProjectileMagic.h"
+#include "Projectiles/RogueProjectileMagic.h"
 #include "Components/StaticMeshComponent.h"
 #include "TimerManager.h"
 #include "AssetTypeActions/AssetDefinition_SoundBase.h"
