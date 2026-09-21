@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "RoguePlayerCharacter.generated.h"
 
+class ARogueProjectile;
 class UNiagaraSystem;
 class ARogueProjectileMagic;
 struct FInputActionInstance;
@@ -27,7 +28,7 @@ public:
 protected:
 	
 	UPROPERTY(EditDefaultsOnly, Category="PrimaryAttack")
-	TSubclassOf<ARogueProjectileMagic> ProjectileClass;
+	TSubclassOf<ARogueProjectileMagic> PrimaryProjectileClass;
 	
 	UPROPERTY(EditDefaultsOnly, Category="PrimaryAttack")
 	TObjectPtr<UNiagaraSystem> CastingEffect;
@@ -41,6 +42,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category="PrimaryAttack")
 	TObjectPtr<UAnimMontage> AttackMontage;
 	
+	UPROPERTY(EditDefaultsOnly, Category="SecondaryAttack")
+	TSubclassOf<ARogueProjectile> SecondaryProjectileClass;
+	
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	TObjectPtr<UInputAction> Input_Move;
 	
@@ -53,11 +57,21 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	TObjectPtr<UInputAction> Input_PrimaryAttack;
 	
+	UPROPERTY(EditDefaultsOnly, Category="Input")
+	TObjectPtr<UInputAction> Input_SecondaryAttack;
+	
 	UPROPERTY(VisibleAnywhere, Category="Components")
 	TObjectPtr<UCameraComponent> CameraComponent;
 	
 	UPROPERTY(VisibleAnywhere, Category="Components")
 	TObjectPtr<USpringArmComponent> SpringArmComponent;
+	
+	FTimerHandle AttackTimerHandle;
+	
+	const float AttackDelayTime = 0.2f;
+	
+	UFUNCTION()
+	void AttackTimerElapsed(TSubclassOf<ARogueProjectile> ProjectileClass);
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -68,7 +82,9 @@ protected:
 
 	void PrimaryAttack();
 	
-	void AttackTimerElapsed();
+	void SecondaryAttack();
+	
+	void PlayCastingEffects();
 	
 public:	
 	// Called every frame

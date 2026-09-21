@@ -20,13 +20,7 @@ ARogueItemChest::ARogueItemChest()
 	LidMeshComponent->SetupAttachment(BaseMeshComponent);
 }
 
-void ARogueItemChest::BeginPlay()
-{
-	Super::BeginPlay();
-	
-}
-
-void ARogueItemChest::Interact()
+void ARogueItemChest::Interact_Implementation()
 {
 	SetActorTickEnabled(true);
 }
@@ -41,6 +35,8 @@ void ARogueItemChest::Tick(float DeltaTime)
 	if (FMath::IsNearlyEqual(CurrentAnimationPitch, AnimationTargetPitch))
 	{
 		SetActorTickEnabled(false);
+		
+		ChestAnimationComplete();
 	}
 }
 

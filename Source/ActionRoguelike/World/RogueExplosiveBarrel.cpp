@@ -53,8 +53,17 @@ void ARogueExplosiveBarrel::Explode()
 {
 	bHasExploded = true;
 	
-	ActiveTriggerEffect->Deactivate();
-	ActiveTriggerSound->Stop();
+	if (ActiveTriggerEffect)
+	{
+		ActiveTriggerEffect->Deactivate();	
+	}
+	if (ActiveTriggerSound)
+	{
+		ActiveTriggerSound->Stop();	
+	}
+	
+	MeshComponent->AddImpulse(FVector::UpVector * 1000, NAME_None, true);
+	MeshComponent->AddAngularImpulseInDegrees(FVector::RightVector * 1000, NAME_None, true);
 	
 	ForceComponent->FireImpulse();
 	

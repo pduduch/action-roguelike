@@ -48,6 +48,7 @@ void ARoguePlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 	EnhancedInput->BindAction(Input_Jump, ETriggerEvent::Triggered, this, &ACharacter::Jump);
 	
 	EnhancedInput->BindAction(Input_PrimaryAttack, ETriggerEvent::Triggered, this, &ARoguePlayerCharacter::PrimaryAttack);
+	EnhancedInput->BindAction(Input_SecondaryAttack, ETriggerEvent::Triggered, this, &ARoguePlayerCharacter::SecondaryAttack);
 }
 
 void ARoguePlayerCharacter::Move(const FInputActionValue& InValue)
@@ -75,21 +76,34 @@ void ARoguePlayerCharacter::Look(const FInputActionInstance& InValue)
 
 void ARoguePlayerCharacter::PrimaryAttack()
 {	
-	PlayAnimMontage(AttackMontage);
+	PlayCastingEffects();
 	
-	FTimerHandle AttackTimerHandle;
-	const float AttackDelayTime = 0.2f;
+	FTimerDelegate AttackTimerDel;
+	
+	AttackTimerDel.BindUFunction(this, FName("AttackTimerElapsed"), PrimaryProjectileClass);
+	GetWorldTimerManager().SetTimer(AttackTimerHandle, AttackTimerDel, AttackDelayTime, false);
+}
+
+void ARoguePlayerCharacter::SecondaryAttack()
+{
+	PlayCastingEffects();
+	
+	FTimerDelegate AttackTimerDel;
+	
+	AttackTimerDel.BindUFunction(this, FName("AttackTimerElapsed"), SecondaryProjectileClass);
+	GetWorldTimerManager().SetTimer(AttackTimerHandle, AttackTimerDel, AttackDelayTime, false);
+}
+
+void ARoguePlayerCharacter::PlayCastingEffects()
+{
+	PlayAnimMontage(AttackMontage);
 	
 	UNiagaraFunctionLibrary::SpawnSystemAttached(CastingEffect, GetMesh(), MuzzleSocketName,
 		FVector::ZeroVector, FRotator::ZeroRotator, EAttachLocation::Type::SnapToTarget, true);
-	
 	UGameplayStatics::PlaySound2D(this, CastingSound);
-	
-	GetWorldTimerManager().SetTimer(AttackTimerHandle, this, &ARoguePlayerCharacter::AttackTimerElapsed, AttackDelayTime);
-	
 }
 
-void ARoguePlayerCharacter::AttackTimerElapsed()
+void ARoguePlayerCharacter::AttackTimerElapsed(TSubclassOf<ARogueProjectile> ProjectileClass)
 {
 	FVector SpawnLocation = GetMesh()->GetSocketLocation(MuzzleSocketName);
 	FRotator SpawnRotation = GetControlRotation();

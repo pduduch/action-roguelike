@@ -46,6 +46,7 @@ protected:
 	UPROPERTY()
 	TObjectPtr<UAudioComponent> ActiveTriggerSound = nullptr;
 	
+	UFUNCTION(BlueprintCallable)
 	void Explode();
 	
 public:
