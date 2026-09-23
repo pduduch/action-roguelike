@@ -28,22 +28,25 @@ public:
 protected:
 	
 	UPROPERTY(EditDefaultsOnly, Category="PrimaryAttack")
-	TSubclassOf<ARogueProjectileMagic> PrimaryProjectileClass;
+	TSubclassOf<ARogueProjectile> PrimaryProjectileClass;
 	
-	UPROPERTY(EditDefaultsOnly, Category="PrimaryAttack")
+	UPROPERTY(EditDefaultsOnly, Category="Attack")
 	TObjectPtr<UNiagaraSystem> CastingEffect;
 	
-	UPROPERTY(EditDefaultsOnly, Category="PrimaryAttack")
+	UPROPERTY(EditDefaultsOnly, Category="Attack")
 	TObjectPtr<USoundBase> CastingSound;
 	
-	UPROPERTY(VisibleAnywhere, Category="PrimaryAttack")
+	UPROPERTY(VisibleAnywhere, Category="Attack")
 	FName MuzzleSocketName;
 	
-	UPROPERTY(EditDefaultsOnly, Category="PrimaryAttack")
+	UPROPERTY(EditDefaultsOnly, Category="Attack")
 	TObjectPtr<UAnimMontage> AttackMontage;
 	
 	UPROPERTY(EditDefaultsOnly, Category="SecondaryAttack")
 	TSubclassOf<ARogueProjectile> SecondaryProjectileClass;
+	
+	UPROPERTY(EditDefaultsOnly, Category="SpecialAttack")
+	TSubclassOf<ARogueProjectile> SpecialProjectileClass;
 	
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	TObjectPtr<UInputAction> Input_Move;
@@ -59,6 +62,9 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	TObjectPtr<UInputAction> Input_SecondaryAttack;
+	
+	UPROPERTY(EditDefaultsOnly, Category="Input")
+	TObjectPtr<UInputAction> Input_SpecialAttack;
 	
 	UPROPERTY(VisibleAnywhere, Category="Components")
 	TObjectPtr<UCameraComponent> CameraComponent;
@@ -79,12 +85,8 @@ protected:
 	void Move(const FInputActionValue& InValue);
 	
 	void Look(const FInputActionInstance& InValue);
-
-	void PrimaryAttack();
 	
-	void SecondaryAttack();
-	
-	void PlayCastingEffects();
+	void StartProjectileAttack(TSubclassOf<ARogueProjectile> ProjectileClass);
 	
 public:	
 	// Called every frame

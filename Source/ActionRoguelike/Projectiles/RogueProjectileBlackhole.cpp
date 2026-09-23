@@ -16,17 +16,17 @@ ARogueProjectileBlackhole::ARogueProjectileBlackhole()
 {
 	ProjectileMovementComponent->InitialSpeed = 500.f;	
 	
-	BlackholeNiagaraComponent = CreateDefaultSubobject<UNiagaraComponent>(TEXT("BlackholeNiagaraComp"));
-	BlackholeNiagaraComponent->SetupAttachment(SphereComponent);
-	
 	RadialForceComponent = CreateDefaultSubobject<URadialForceComponent>(TEXT("RadialForceComp"));
-	RadialForceComponent->SetupAttachment(SphereComponent);
+	RadialForceComponent->SetupAttachment(RootComponent);
 	RadialForceComponent->Radius = 750.f;
 	RadialForceComponent->Falloff = ERadialImpulseFalloff::RIF_Constant;
 	RadialForceComponent->bIgnoreOwningActor = true;
 	RadialForceComponent->ForceStrength = -750000.f;
 	RadialForceComponent->bAutoActivate = true;
-	RadialForceComponent->RemoveObjectTypeToAffect(EObjectTypeQuery::ObjectTypeQuery3); // Pawn should not be affected
+	RadialForceComponent->RemoveObjectTypeToAffect(UEngineTypes::ConvertToObjectType(ECC_Pawn)); // Pawn should not be affected
+	
+	SphereComponent->SetSphereRadius(20.f);
+	SphereComponent->SetCollisionProfileName("ProjectileBlackhole");
 }
 
 void ARogueProjectileBlackhole::PostInitializeComponents()

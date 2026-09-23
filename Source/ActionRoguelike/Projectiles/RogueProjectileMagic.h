@@ -19,12 +19,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category="Damage")
 	TSubclassOf<UDamageType> DmgTypeClass;
 	
-	UPROPERTY(VisibleAnywhere, Category="Components")
-	TObjectPtr<UNiagaraComponent> LoopedNiagaraComponent;
-	
-	UPROPERTY(VisibleAnywhere, Category="Components")
-	TObjectPtr<UAudioComponent> LoopedAudioComponent;
-	
 	virtual void OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit) override;
 
 public:

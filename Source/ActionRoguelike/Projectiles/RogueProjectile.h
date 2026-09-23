@@ -6,9 +6,12 @@
 #include "GameFramework/Actor.h"
 #include "RogueProjectile.generated.h"
 
+class UAudioComponent;
+class UNiagaraComponent;
 class UNiagaraSystem;
 class USphereComponent;
 class UProjectileMovementComponent;
+class USoundBase;
 
 UCLASS(Abstract)
 class ACTIONROGUELIKE_API ARogueProjectile : public AActor
@@ -22,6 +25,12 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly, Category="Components")
 	TObjectPtr<UProjectileMovementComponent> ProjectileMovementComponent;
+	
+	UPROPERTY(VisibleAnywhere, Category="Components")
+	TObjectPtr<UNiagaraComponent> LoopedNiagaraComponent;
+	
+	UPROPERTY(VisibleAnywhere, Category="Components")
+	TObjectPtr<UAudioComponent> LoopedAudioComponent;
 	
 	UPROPERTY(EditDefaultsOnly, Category="Effects")
 	TObjectPtr<UNiagaraSystem> ExplosionEffect;

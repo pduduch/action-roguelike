@@ -17,9 +17,6 @@ class ACTIONROGUELIKE_API ARogueProjectileBlackhole : public ARogueProjectile
 protected:
 	
 	UPROPERTY(VisibleAnywhere, Category="Components")
-	TObjectPtr<UNiagaraComponent> BlackholeNiagaraComponent;
-	
-	UPROPERTY(VisibleAnywhere, Category="Components")
 	TObjectPtr<URadialForceComponent> RadialForceComponent;
 	
 	UFUNCTION()
