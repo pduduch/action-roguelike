@@ -12,10 +12,13 @@ struct FRogueAttributeSet
 	GENERATED_BODY()
 	
 	FRogueAttributeSet()
-		: Health(100.0f) {}
+		: Health(100.0f), HealthMax(100.0f) {}
 	
 	UPROPERTY(BlueprintReadOnly)
 	float Health;
+	
+	UPROPERTY(BlueprintReadOnly)
+	float HealthMax;
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnHealthChanged, float, NewHealth, float, OldHealth);
@@ -27,10 +30,15 @@ class ACTIONROGUELIKE_API URogueActionSystemComponent : public UActorComponent
 
 public:
 	
-	void ApplyHealthChange(float InValueChange);
-	
 	UPROPERTY(BlueprintAssignable)
 	FOnHealthChanged OnHealthChanged;
+	
+	void ApplyHealthChange(float InValueChange);
+
+	FORCEINLINE bool IsHealthFull() const
+	{
+		return FMath::IsNearlyEqual(Attributes.Health, Attributes.HealthMax);
+	}
 
 protected:
 	
