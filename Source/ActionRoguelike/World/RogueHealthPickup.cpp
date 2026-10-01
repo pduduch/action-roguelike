@@ -4,7 +4,6 @@
 #include "RogueHealthPickup.h"
 
 #include "ActionSystem/RogueActionSystemComponent.h"
-#include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
 
