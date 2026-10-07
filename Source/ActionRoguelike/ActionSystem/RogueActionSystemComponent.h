@@ -39,6 +39,11 @@ public:
 	{
 		return FMath::IsNearlyEqual(Attributes.Health, Attributes.HealthMax);
 	}
+	
+	FORCEINLINE float GetCurrentHealthPercent() const
+	{
+		return Attributes.Health / Attributes.HealthMax;
+	}
 
 protected:
 	
