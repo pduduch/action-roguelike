@@ -7,9 +7,6 @@
 #include "RoguePlayerCharacter.generated.h"
 
 class URogueActionSystemComponent;
-class ARogueProjectile;
-class UNiagaraSystem;
-class ARogueProjectileMagic;
 struct FInputActionInstance;
 struct FInputActionValue;
 class UInputAction;
@@ -28,29 +25,8 @@ public:
 
 protected:
 	
-	UPROPERTY(EditDefaultsOnly, Category="PrimaryAttack")
-	TSubclassOf<ARogueProjectile> PrimaryProjectileClass;
-	
-	UPROPERTY(EditDefaultsOnly, Category="Attack")
-	TObjectPtr<UNiagaraSystem> CastingEffect;
-	
-	UPROPERTY(EditDefaultsOnly, Category="Attack")
-	TObjectPtr<USoundBase> CastingSound;
-	
-	UPROPERTY(VisibleAnywhere, Category="Attack")
-	FName MuzzleSocketName;
-	
-	UPROPERTY(EditDefaultsOnly, Category="Attack")
-	TObjectPtr<UAnimMontage> AttackMontage;
-	
 	UPROPERTY(EditDefaultsOnly, Category="Death")
 	TObjectPtr<UAnimMontage> DeathMontage;
-	
-	UPROPERTY(EditDefaultsOnly, Category="SecondaryAttack")
-	TSubclassOf<ARogueProjectile> SecondaryProjectileClass;
-	
-	UPROPERTY(EditDefaultsOnly, Category="SpecialAttack")
-	TSubclassOf<ARogueProjectile> SpecialProjectileClass;
 	
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	TObjectPtr<UInputAction> Input_Move;
@@ -84,17 +60,12 @@ protected:
 	const float AttackDelayTime = 0.2f;
 	
 	UFUNCTION()
-	void AttackTimerElapsed(TSubclassOf<ARogueProjectile> ProjectileClass);
-	
-	UFUNCTION()
 	void OnHealthChanged(float NewHealth, float OldHealth);
 	
 	void Move(const FInputActionValue& InValue);
 	
 	void Look(const FInputActionInstance& InValue);
 	
-	void StartProjectileAttack(TSubclassOf<ARogueProjectile> ProjectileClass);
-
 	void StartAction(FName InActionName);
 	
 public:	

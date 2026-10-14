@@ -50,6 +50,8 @@ public:
 	}
 
 	virtual void InitializeComponent() override;
+	
+	void GrantAction(TSubclassOf<URogueAction> NewActionClass);
 
 protected:
 	
@@ -58,6 +60,9 @@ protected:
 	
 	UPROPERTY()
 	TArray<TObjectPtr<URogueAction>> Actions;
+	
+	UPROPERTY(EditAnywhere, Category="Actions")
+	TArray<TSubclassOf<URogueAction>> DefaultActions;
 	
 public:
 	
