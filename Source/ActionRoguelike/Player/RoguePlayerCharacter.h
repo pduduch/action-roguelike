@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "RoguePlayerCharacter.generated.h"
 
+struct FGameplayTag;
 class URogueActionSystemComponent;
 struct FInputActionInstance;
 struct FInputActionValue;
@@ -33,6 +34,9 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	TObjectPtr<UInputAction> Input_Jump;
+	
+	UPROPERTY(EditDefaultsOnly, Category="Input")
+	TObjectPtr<UInputAction> Input_Sprint;
 	
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	TObjectPtr<UInputAction> Input_Look;
@@ -66,7 +70,9 @@ protected:
 	
 	void Look(const FInputActionInstance& InValue);
 	
-	void StartAction(FName InActionName);
+	void StartAction(FGameplayTag InActionName);
+	
+	void StopAction(FGameplayTag InActionName);
 	
 public:	
 	

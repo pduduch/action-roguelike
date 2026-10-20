@@ -20,11 +20,13 @@ TAutoConsoleVariable<float> CVarProjectileAdjustmentDebugDrawing(TEXT("game.proj
 URogueAction_ProjectileAttack::URogueAction_ProjectileAttack()
 {
 	MuzzleSocketName = "Muzzle_01";
+	
+	CooldownTime = 0.5f;
 }
 
-void URogueAction_ProjectileAttack::StartAction()
+void URogueAction_ProjectileAttack::StartAction_Implementation()
 {
-	Super::StartAction();
+	Super::StartAction_Implementation();
 	
 	URogueActionSystemComponent* ActionComp = GetOwningComponent();
 	ACharacter* Character = CastChecked<ACharacter>(ActionComp->GetOwner());
@@ -80,9 +82,10 @@ void URogueAction_ProjectileAttack::AttackTimerElapsed()
 	
 	Character->MoveIgnoreActorAdd(NewProjectile);
 	
-	float DebugDrawDuration = CVarProjectileAdjustmentDebugDrawing.GetValueOnGameThread();
+	StopAction();
 	
 #if !UE_BUILD_SHIPPING
+	float DebugDrawDuration = CVarProjectileAdjustmentDebugDrawing.GetValueOnGameThread();
 	if (DebugDrawDuration > 0.0f)
 	{
 		// Hit location or trace end
