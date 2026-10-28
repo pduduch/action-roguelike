@@ -3,28 +3,27 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "Components/ActorComponent.h"
 #include "RogueActionSystemComponent.generated.h"
 
-struct FGameplayTag;
+struct FRogueAttribute;
+class URogueAttributeSet;
 class URogueAction;
 
-USTRUCT(BlueprintType)
-struct FRogueAttributeSet
+
+UENUM()
+enum EAttributeModifyType
 {
-	GENERATED_BODY()
-	
-	FRogueAttributeSet()
-		: Health(100.0f), HealthMax(100.0f) {}
-	
-	UPROPERTY(BlueprintReadOnly)
-	float Health;
-	
-	UPROPERTY(BlueprintReadOnly)
-	float HealthMax;
+	Base,
+	Modifier,
+	OverrideBase,
+	Invalid
 };
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnHealthChanged, float, NewHealth, float, OldHealth);
+
+DECLARE_MULTICAST_DELEGATE_ThreeParams(FOnAttributeChanged, FGameplayTag /*AttributeTag*/, float /*NewAttributeValue*/, float /*OldAttributeValue*/);
+
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class ACTIONROGUELIKE_API URogueActionSystemComponent : public UActorComponent
@@ -33,33 +32,32 @@ class ACTIONROGUELIKE_API URogueActionSystemComponent : public UActorComponent
 
 public:
 	
-	UPROPERTY(BlueprintAssignable)
-	FOnHealthChanged OnHealthChanged;
-	
 	void StartAction(FGameplayTag InActionName);
 	
 	void StopAction(FGameplayTag InActionName);
 	
-	void ApplyHealthChange(float InValueChange);
-
-	FORCEINLINE bool IsHealthFull() const
-	{
-		return FMath::IsNearlyEqual(Attributes.Health, Attributes.HealthMax);
-	}
+	void ApplyAttributeChange(FGameplayTag AttributeTag, float Delta, EAttributeModifyType ModifyType);
 	
-	FORCEINLINE float GetCurrentHealthPercent() const
-	{
-		return Attributes.Health / Attributes.HealthMax;
-	}
+	FRogueAttribute* GetAttribute(FGameplayTag InAttributeTag);
+	
+	FOnAttributeChanged& GetAttributeListener(FGameplayTag AttributeTag);
 
 	virtual void InitializeComponent() override;
 	
 	void GrantAction(TSubclassOf<URogueAction> NewActionClass);
-
-protected:
 	
-	UPROPERTY(BlueprintReadOnly, Category="Attributes")
-	FRogueAttributeSet Attributes;
+	FGameplayTagContainer ActiveGameplayTags;
+
+protected:	
+	UPROPERTY()
+	TObjectPtr<URogueAttributeSet> Attributes;
+	
+	TMap<FGameplayTag, FRogueAttribute*> CachedAttributes;
+	
+	UPROPERTY(EditAnywhere, Category=Attributes, NoClear)
+	TSubclassOf<URogueAttributeSet> AttributeSetClass;
+	
+	TMap<FGameplayTag, FOnAttributeChanged> AttributeListeners;
 	
 	UPROPERTY()
 	TArray<TObjectPtr<URogueAction>> Actions;

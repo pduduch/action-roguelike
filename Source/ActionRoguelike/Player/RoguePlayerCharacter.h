@@ -63,8 +63,7 @@ protected:
 	
 	const float AttackDelayTime = 0.2f;
 	
-	UFUNCTION()
-	void OnHealthChanged(float NewHealth, float OldHealth);
+	void OnHealthChanged(FGameplayTag AttributeTag, float NewHealth, float OldHealth);
 	
 	void Move(const FInputActionValue& InValue);
 	

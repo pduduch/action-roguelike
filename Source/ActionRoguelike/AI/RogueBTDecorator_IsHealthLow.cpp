@@ -9,15 +9,14 @@
 bool URogueBTDecorator_IsHealthLow::CalculateRawConditionValue(UBehaviorTreeComponent& OwnerComp,
                                                                uint8* NodeMemory) const
 {
-	Super::CalculateRawConditionValue(OwnerComp, NodeMemory);
-	
 	APawn* Pawn = OwnerComp.GetAIOwner()->GetPawn();
 	check(Pawn);
 	
 	URogueActionSystemComponent* ActionSystemComp = Pawn->GetComponentByClass<URogueActionSystemComponent>();
 	if (ensure(ActionSystemComp))
 	{
-		return ActionSystemComp->GetCurrentHealthPercent() <= LowHealthThreshold;
+		check(false);
+		return false;//ActionSystemComp->GetCurrentHealthPercent() <= LowHealthThreshold;
 	}
 	
 	return false;
