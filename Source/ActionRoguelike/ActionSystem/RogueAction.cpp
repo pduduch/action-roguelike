@@ -17,7 +17,13 @@ void URogueAction::StartAction_Implementation()
 		("ActionName", ActionName.ToString()),
 		("WorldTime", GameTime));
 	
-	GetOwningComponent()->ActiveGameplayTags.AppendTags(GrantTags);
+	URogueActionSystemComponent* ActionSystemComp = GetOwningComponent();
+	ActionSystemComp->ActiveGameplayTags.AppendTags(GrantTags);
+
+	for (const TPair<FGameplayTag, float>& Cost : ActivationCost)
+	{
+		ActionSystemComp->ApplyAttributeChange(Cost.Key, -Cost.Value, EAttributeModifyType::Modifier);
+	}
 }
 
 void URogueAction::StopAction_Implementation()
@@ -48,9 +54,20 @@ bool URogueAction::CanStart() const
 		return false;
 	}
 	
-	if (GetOwningComponent()->ActiveGameplayTags.HasAny(BlockedTags))
+	URogueActionSystemComponent* ActionSystemComp = GetOwningComponent();
+	check(ActionSystemComp)
+	
+	if (ActionSystemComp->ActiveGameplayTags.HasAny(BlockedTags))
 	{
 		return false;
+	}
+
+	for (const TPair<FGameplayTag, float>& Cost : ActivationCost)
+	{
+		if (ActionSystemComp->GetAttributeValue(Cost.Key) < Cost.Value)
+		{
+			return false;
+		}
 	}
 	
 	return true;
