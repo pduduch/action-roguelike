@@ -23,4 +23,6 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	TObjectPtr<URogueActionSystemComponent> ActionSystemComponent;
+	
+	FTimerHandle OverlayTimerHandle;
 };

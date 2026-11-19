@@ -21,5 +21,14 @@ float ARogueAICharacter::TakeDamage(float DamageAmount, struct FDamageEvent cons
 	
 	ActionSystemComponent->ApplyAttributeChange(SharedGameplayTags::Attribute_Health, -ActualDamage, Base);
 	
+	GetMesh()->SetOverlayMaterialMaxDrawDistance(0);
+	GetMesh()->SetCustomPrimitiveDataFloat(0, GetWorld()->TimeSeconds);
+	
+	GetWorldTimerManager().SetTimer(OverlayTimerHandle, [this]()
+	{
+		GetMesh()->SetOverlayMaterialMaxDrawDistance(1);
+		
+	}, 1.0f, false);
+	
 	return ActualDamage;
 }
