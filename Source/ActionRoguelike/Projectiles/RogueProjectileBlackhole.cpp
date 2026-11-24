@@ -27,6 +27,8 @@ ARogueProjectileBlackhole::ARogueProjectileBlackhole()
 	
 	SphereComponent->SetSphereRadius(20.f);
 	SphereComponent->SetCollisionProfileName("ProjectileBlackhole");
+	
+	InitialLifeSpan = 5.0f;
 }
 
 void ARogueProjectileBlackhole::PostInitializeComponents()

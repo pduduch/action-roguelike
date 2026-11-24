@@ -14,6 +14,13 @@ ARogueAICharacter::ARogueAICharacter()
 	ActionSystemComponent->SetDefaultAttributeSet(URogueMonsterAttributeSet::StaticClass());
 }
 
+void ARogueAICharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	
+	GetMesh()->SetOverlayMaterialMaxDrawDistance(1);
+}
+
 float ARogueAICharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent,
 	class AController* EventInstigator, AActor* DamageCauser)
 {
